@@ -1,0 +1,16 @@
+{
+  "name": "proctor-me",
+  "version": "1.0.0",
+  "description": "Add a proctor sheet to an uploaded exam and export it as pdf or docx",
+  "main": "public/index.html",
+  "repository": "https://github.com/jamesfromomaha/proctor-me",
+  "author": "James White <james@thewhites.co>",
+  "license": "MIT",
+  "private": false,
+  "dependencies": {
+    "sass": "^1.69.5"
+  },
+  "scripts": {
+    "build": "sass scss/main.scss public/style/main.css"
+  }
+}
