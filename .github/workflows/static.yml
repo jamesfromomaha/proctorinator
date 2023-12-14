@@ -29,14 +29,19 @@ jobs:
       url: ${{ steps.deployment.outputs.page_url }}
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout
-        uses: actions/checkout@v4
-      - name: Setup Pages
-        uses: actions/configure-pages@v4
-      - name: Upload artifact
-        uses: actions/upload-pages-artifact@v2
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v3
         with:
-          path: 'public/'
-      - name: Deploy to GitHub Pages
-        id: deployment
+          node-version: 16.x
+      - uses: borales/actions-yarn@v4
+        with:
+          cmd: install
+      - uses: borales/actions-yarn@v4
+        with:
+          cmd: build
+      - uses: actions/configure-pages@v4
+      - uses: actions/upload-pages-artifact@v2
+        with:
+          path: public
+      - id: deployment
         uses: actions/deploy-pages@v3
