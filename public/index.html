@@ -3,15 +3,51 @@
   <head>
     <title>Proctor Me</title>
     <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+
     <link rel="stylesheet" href="style/main.css" />
     <link rel="favicon" href="resources/favicon.ico" />
-    <script src="lib/custom-elements.js"></script>
-  </head>
-  <body>
 
-    <script src="lib/blob-stream.js"></script>
-    <script src="lib/docx.js"></script>
-    <script src="lib/pdfkit.js"></script>
-    <script src="src/index.js"></script>
+    <script src="lib/custom-elements.js"></script>
+    <script src="lib/include-html.js"></script>
+
+    <include-html href="templates/esc/button.html" />
+    <include-html href="templates/esc/icon.html" />
+    <include-html href="templates/esc/steps.html" />
+    <include-html href="templates/esc/toolbar.html" />
+    <include-html href="templates/esc/upload.html" />
+  </head>
+
+  <body>
+    <main> <!-- <esc-steps> -->
+      <section slot="step1" onnext="validate_files"> <!-- <esc-step slot="step1" onnext="validate_files"> -->
+        <h1 slot="label">Upload</h1>
+        <form slot="body">
+          <input type="file" multiple icon xl accept="docx,gif,jpg,pdf,png,tiff" onchange="update_files"> <!-- <esc-upload multiple icon types="docx,gif,jpg,pdf,png,tiff" onchange="update_files"> -->
+            Upload Scanned File(s)
+          </input> <!-- </esc-upload> -->
+        </form>
+      </section> <!-- </esc-step> -->
+      <section slot="step2"> <!-- <esc-step slot="step2"> -->
+        <h1 slot="label">Sign</h1>
+        <form slot="body">
+          <canvas></canvas>
+          <menu> <!-- <esc-toolbar> -->
+            <button icon="cancel"></button> <!-- <esc-button" icon="cancel"></button> -->
+            <button icon="undo"></button> <!-- <esc-button" icon="undo"></button> -->
+            <button icon="redo"></button> <!-- <esc-button" icon="redo"></button> -->
+            <button id="save-indicator" icon="save"></button> <!-- <esc-icon id="save-indicator" icon="save"></esc-icon> -->
+          </menu> <!-- </esc-toolbar> -->
+        </form>
+      </section> <!-- </esc-step> -->
+      <section slot="step3"> <!-- <esc-step slot="step3"> -->
+        <h1 slot="label">Export</h1>
+        <menu xl slot="body"> <!-- <esc-toolbar xl slot="body"> -->
+          <button icon="docx">Export as Docx</button> <!-- <esc-button icon="docx">Export as Docx</esc-button> -->
+          <button icon="pdf">Export as PDF</button> <!-- <esc-button icon="pdf">Export as PDF</esc-button> -->
+        </menu> <!-- </esc-toolbar> -->
+      </section> <!-- </esc-step> -->
+    </main> <!-- </esc-steps> -->
+
+    <script src="src/main.js"></script>
   </body>
 </html>
