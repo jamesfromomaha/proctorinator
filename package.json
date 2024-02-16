@@ -8,7 +8,8 @@
   "license": "MIT",
   "private": false,
   "dependencies": {
-    "sass": "^1.69.5"
+    "sass": "^1.69.5",
+    "setimmediate": "^1.0.5"
   },
   "scripts": {
     "build": "sass scss/main.scss public/style/main.css"
