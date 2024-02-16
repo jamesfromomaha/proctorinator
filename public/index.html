@@ -3,51 +3,93 @@
   <head>
     <title>Proctor Me</title>
     <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+    <meta http-equiv="viewport" content="width=device-width, initial-scale=1" />
 
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="style/main.css" />
     <link rel="favicon" href="resources/favicon.ico" />
-
-    <script src="lib/custom-elements.js"></script>
-    <script src="lib/include-html.js"></script>
-
-    <include-html href="templates/esc/button.html" />
-    <include-html href="templates/esc/icon.html" />
-    <include-html href="templates/esc/steps.html" />
-    <include-html href="templates/esc/toolbar.html" />
-    <include-html href="templates/esc/upload.html" />
   </head>
 
   <body>
-    <main> <!-- <esc-steps> -->
-      <section slot="step1" onnext="validate_files"> <!-- <esc-step slot="step1" onnext="validate_files"> -->
+    <main id="steps" class="carousel slide" data-bs-touch="false">
+      <div class="carousel-indicators">
+        <span class="active"></span>
+        <span></span>
+        <span></span>
+      </div>
+      <section class="carousel-inner">
+        <section class="carousel-item active">
+          <h1>Upload</h1>
+          <form>
+            <label for="upload" class="form-label">Upload Scanned File(s)</label>
+            <input class="form-control form-control-lg" id="upload" type="file" multiple accept=".docx,.gif,.jpg,.jpeg,.pdf,.png,.tiff" onchange="upload" />
+          </form>
+        </section>
+        <section class="carousel-item">
+          <h1>Sign</h1>
+          <form>
+            <canvas></canvas>
+            <menu class="btn-group" role="toolbar">
+              <button class="btn btn-outline-primary" onclick="reset"><span class="fa-solid fa-xmark"></span></button>
+              <button class="btn btn-outline-primary" onclick="undo"><span class="fa-solid fa-rotate-left"></span></button>
+              <button class="btn btn-outline-primary" onclick="redo"><span class="fa-solid fa-rotate-right"></span></button>
+              <button class="btn btn-primary" onclick="save"><span class="fa-solid fa-floppy-disk"></span> Save</button>
+            </menu>
+          </form>
+        </section>
+        <section class="carousel-item">
+          <h1>Export</h1>
+          <menu class="btn-group-vertical btn-group-lg" role="group">
+            <button class="btn btn-success" onclick="docx"><div class="fa-solid fa-file-docx"></div><div>Export as Docx</div></button>
+            <button class="btn btn-success" onclick="pdf"><div class="fa-solid fa-file-word"></div><div>Export as PDF</div></button>
+          </menu>
+        </section>
+      </section>
+      <button class="carousel-control-prev visually-hidden" data-bs-target="#steps" data-bs-slide="prev" onclick="prev">
+        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+        <span class="visually-hidden">Prev</span>
+      </button>
+      <button class="carousel-control-next visually-hidden" data-bs-target="#steps" data-bs-slide="next" onclick="next">
+        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+        <span class="visually-hidden">Next</span>
+      </button>
+    </main>
+
+    <!--
+    <main> <!- - <esc-steps> - ->
+      <section slot="step1"> <!- - <esc-step slot="step1"> - ->
         <h1 slot="label">Upload</h1>
         <form slot="body">
-          <input type="file" multiple icon xl accept="docx,gif,jpg,pdf,png,tiff" onchange="update_files"> <!-- <esc-upload multiple icon types="docx,gif,jpg,pdf,png,tiff" onchange="update_files"> -->
+          <input type="file" multiple icon xl accept="docx,gif,jpg,pdf,png,tiff" onchange> <!- - <esc-upload multiple icon types="docx,gif,jpg,pdf,png,tiff" onchange> - ->
             Upload Scanned File(s)
-          </input> <!-- </esc-upload> -->
+          </input> <!- - </esc-upload> - ->
+          <ol onreorder onremove items="[]"></ol> <!- - <esc-list items="[]" onremove onreorder></esc-list> - ->
         </form>
-      </section> <!-- </esc-step> -->
-      <section slot="step2"> <!-- <esc-step slot="step2"> -->
+      </section> <!- - </esc-step> - ->
+      <section slot="step2"> <!- - <esc-step slot="step2"> - ->
         <h1 slot="label">Sign</h1>
         <form slot="body">
           <canvas></canvas>
-          <menu> <!-- <esc-toolbar> -->
-            <button icon="cancel"></button> <!-- <esc-button" icon="cancel"></button> -->
-            <button icon="undo"></button> <!-- <esc-button" icon="undo"></button> -->
-            <button icon="redo"></button> <!-- <esc-button" icon="redo"></button> -->
-            <button id="save-indicator" icon="save"></button> <!-- <esc-icon id="save-indicator" icon="save"></esc-icon> -->
-          </menu> <!-- </esc-toolbar> -->
+          <menu> <!- - <esc-toolbar> - ->
+            <button icon="cancel"></button> <!- - <esc-btn icon="cancel"></esc-btn> - ->
+            <button icon="undo"></button> <!- - <esc-btn icon="undo"></esc-btn> - ->
+            <button icon="redo"></button> <!- - <esc-btn icon="redo"></esc-btn> - ->
+            <button id="save-indicator" icon="save"></button> <!- - <esc-icon id="save-indicator" icon="save"></esc-icon> - ->
+          </menu> <!- - </esc-toolbar> - ->
         </form>
-      </section> <!-- </esc-step> -->
-      <section slot="step3"> <!-- <esc-step slot="step3"> -->
+      </section> <!- - </esc-step> - ->
+      <section slot="step3"> <!- - <esc-step slot="step3"> - ->
         <h1 slot="label">Export</h1>
-        <menu xl slot="body"> <!-- <esc-toolbar xl slot="body"> -->
-          <button icon="docx">Export as Docx</button> <!-- <esc-button icon="docx">Export as Docx</esc-button> -->
-          <button icon="pdf">Export as PDF</button> <!-- <esc-button icon="pdf">Export as PDF</esc-button> -->
-        </menu> <!-- </esc-toolbar> -->
-      </section> <!-- </esc-step> -->
-    </main> <!-- </esc-steps> -->
+        <menu xl slot="body"> <!- - <esc-toolbar xl slot="body"> - ->
+          <button icon="docx">Export as Docx</button> <!- - <esc-button icon="docx">Export as Docx</esc-button> - ->
+          <button icon="pdf">Export as PDF</button> <!- - <esc-button icon="pdf">Export as PDF</esc-button> - ->
+        </menu> <!- - </esc-toolbar> - ->
+      </section> <!- - </esc-step> - ->
+    </main> <!- - </esc-steps> - ->
+    -->
 
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" />
+    <script src="https://kit.fontawesome.com/f9d98b47c1.js" crossorigin="anonymous" />
     <script src="src/main.js"></script>
   </body>
 </html>
