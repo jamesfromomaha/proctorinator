@@ -1,54 +1,52 @@
-const ls = window.localStorage.createLocalStorage().history;
-function write(prop, value) {
-  setImmediate(() => ls.history.peek()[prop] = value);
-}
+import ls from './local_storage';
 
-function update(prop) {
-  return function () {
-    this[prop] = value;
-    if (value !== og) {
-      // need to write modified prop to ls
-      this.modified = Date.now();
-      write(prop, value);
-    }
-  }
+function upsert(prop, serialize) {
+  return serialize ?
+    function (value) {
+      if (value !== this[prop] && !value?.eq(this[prop])) {
+        this.modified = Date.now();
+        lswrite(prop, (this[prop] = value)?.serialize());
+      }
+    } :
+    function (value) {
+      if (value !== this[prop]) {
+        this.modified = Date.now();
+        lswrite(prop, this[prop] = value);
+      }
+    };
 }
-
-export const UPLOAD = 1;
-export const SIGN = 1;
-export const UPLOAD = 1;
 
 export class State {
-  step = UPLOAD;
-  modified = Date.now();
+  _step = State.UPLOAD;
+  _modified = Date.now();
+
+  title = {
+    get: function() { return this._title },
+    set: upsert('_title'),
+  }; _title;
 
   uploads = {
     get: function() { return this._uploads },
   }; _uploads;
 
-  started = {
+  times = {
     get: function() { return this._started },
-    set: update('_started'),
-  }; _started;
-
-  finished = {
-    get: function() { return this._finished },
-    set: update('_finished'),
-  }; _finished;
+    set: upsert('_times', serialize_times),
+  }; _times;
 
   signature = {
     get: function() { return this._signature },
-    set: update('_signature'),
-  }; _signature = {};
+    set: upsert('_signature'),
+  }; _signature;
 
   docx = {
     get: function() { return this._docx },
-    set: update('_docx'),
+    set: upsert('_docx'),
   }; _docx;
 
   pdf = {
     get: function() { return this._pdf },
-    set: update('_pdf'),
+    set: upsert('_pdf'),
   }; _pdf;
 
   constructor() {
@@ -70,3 +68,7 @@ export class State {
     return result;
   }
 }
+State.UPLOAD = 1;
+State.SIGN = 2;
+State.EXPORT = 3;
+
