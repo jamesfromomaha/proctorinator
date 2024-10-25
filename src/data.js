@@ -1,17 +1,18 @@
-import ls from './local_storage';
+import LS from './local_storage';
+import Elapsed from './elapsed';
 
 function upsert(prop, serialize) {
   return serialize ?
     function (value) {
       if (value !== this[prop] && !value?.eq(this[prop])) {
         this.modified = Date.now();
-        lswrite(prop, (this[prop] = value)?.serialize());
+        LS.write(prop, (this[prop] = value)?.serialize());
       }
     } :
     function (value) {
       if (value !== this[prop]) {
         this.modified = Date.now();
-        lswrite(prop, this[prop] = value);
+        LS.write(prop, this[prop] = value);
       }
     };
 }

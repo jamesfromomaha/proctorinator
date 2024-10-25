@@ -1,6 +1,6 @@
-import ls from './local_storage';
+import LS from './local_storage';
 
-export class Elapsed {
+export default class Elapsed {
   uid;
   list;
   _name;
@@ -37,7 +37,7 @@ export class Elapsed {
   }
 
   save() {
-    ls.write(this.name, this.serialize());
+    LS.write(this.name, this.serialize());
   }
 
   serialize() {

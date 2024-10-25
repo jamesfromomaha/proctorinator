@@ -1,8 +1,10 @@
-export function write(prop, value) {
-  setImmediate(() => localStorage.setItem(prop, value));
-}
-export function read(prop) {
-  return new Promise(
-    (resolve) => setImmediate(() => resolve(localStorage.getItem(prop))
-  );
-}
+export default {
+  write(prop, value) {
+    setImmediate(() => localStorage.setItem(prop, value));
+  },
+  read(prop) {
+    return new Promise(
+      (resolve) => setImmediate(() => resolve(localStorage.getItem(prop))
+    );
+  },
+};
